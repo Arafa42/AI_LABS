@@ -19,6 +19,7 @@ Pacman agents (in searchAgents.py).
 
 import util
 
+
 class SearchProblem:
     """
     This class outlines the structure of a search problem, but doesn't implement
@@ -70,7 +71,8 @@ def tinyMazeSearch(problem):
     from game import Directions
     s = Directions.SOUTH
     w = Directions.WEST
-    return  [s, s, w, s, w, w, s, w]
+    return [s, s, w, s, w, w, s, w]
+
 
 def depthFirstSearch(problem):
     """
@@ -87,17 +89,72 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # util.raiseNotDefined()
+
+    # print("Start:", problem.getStartState())
+    # print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    # print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+
+    from game import Directions
+
+    startingPoint = problem.getStartState();
+    #print("STARTINGPOINT : ", startingPoint)
+    #print("CHILDNODES FROM STARTINGPOINT : ", problem.getSuccessors(problem.getStartState()))
+    #print("test : ", problem.getSuccessors((5,4)))
+
+
+    visited = []
+    queue = util.Stack()
+    queue.push((startingPoint, []))
+    while(queue):
+        current, actions = queue.pop()
+        if(current not in visited):
+            visited.append(current)
+
+            if(problem.isGoalState(current)):
+                return actions
+
+            for n, action, cost in problem.getSuccessors(current):
+                    print(n)
+                    print(action)
+                    newAction = actions + [action]
+                    queue.push((n, newAction))
+
+    print(visited)
+
+
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    startingPoint = problem.getStartState();
+
+    visited = []
+    queue = util.Queue()
+    queue.push((startingPoint, []))
+    while(queue):
+        current, actions = queue.pop()
+        if(current not in visited):
+            visited.append(current)
+
+            if(problem.isGoalState(current)):
+                return actions
+
+            for n, action, cost in problem.getSuccessors(current):
+                    print(n)
+                    print(action)
+                    newAction = actions + [action]
+                    queue.push((n, newAction))
+
+    print(visited)
+
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -105,6 +162,7 @@ def nullHeuristic(state, problem=None):
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
+
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
