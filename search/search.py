@@ -157,7 +157,7 @@ def uniformCostSearch(problem):
     startingPoint = problem.getStartState()
     visited = []
     queue = util.PriorityQueue()
-    queue.push((startingPoint, []), [])
+    queue.push((startingPoint, []), []) #startingpoint,actions,cost
 
     while (queue):
         current, actions = queue.pop()
@@ -168,9 +168,10 @@ def uniformCostSearch(problem):
                 return actions
 
             for n, action, cost in problem.getSuccessors(current):
-                print(n, "\t", action, "\t", cost)
+                #print(n, "\t", action, "\t", cost)
                 newAction = actions + [action]
                 queue.update((n, newAction), cost)
+                #print(cost)
 
 
 def nullHeuristic(state, problem=None):
@@ -184,8 +185,27 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    startingPoint = problem.getStartState()
+    visited = []
+    queue = util.PriorityQueue()
+    queue.push((startingPoint, [],0), 0) #startingNode,action,cost naar huidige node, prior q
 
+    while (queue):
+        current, actions, prevCost = queue.pop()
+        #print(current)
+        #print(actions)
+        #print(prevCost)
+        if (current not in visited):
+            visited.append(current)
+
+            if (problem.isGoalState(current)):
+                return actions
+
+            for n, action, cost in problem.getSuccessors(current):
+                newAction = actions + [action]
+                newCost = prevCost + cost
+                heuristicCost = newCost + heuristic(n,problem)
+                queue.push((n,newAction,newCost),heuristicCost)
 
 # Abbreviations
 bfs = breadthFirstSearch
