@@ -115,8 +115,8 @@ def depthFirstSearch(problem):
                 return actions
 
             for n, action, cost in problem.getSuccessors(current):
-                    print(n)
-                    print(action)
+                    #print(n)
+                    #print(action)
                     newAction = actions + [action]
                     queue.push((n, newAction))
 
@@ -142,8 +142,8 @@ def breadthFirstSearch(problem):
                 return actions
 
             for n, action, cost in problem.getSuccessors(current):
-                    print(n)
-                    print(action)
+                    #print(n)
+                    #print(action)
                     newAction = actions + [action]
                     queue.push((n, newAction))
 
@@ -157,21 +157,22 @@ def uniformCostSearch(problem):
     startingPoint = problem.getStartState()
     visited = []
     queue = util.PriorityQueue()
-    queue.push((startingPoint, []), []) #startingpoint,actions,cost
+    queue.update((startingPoint, [], 0), 0) #startingpoint,actions,cost
 
     while (queue):
-        current, actions = queue.pop()
+        current, actions, cost = queue.pop()
+
+        if (problem.isGoalState(current)):
+            return actions
+
         if (current not in visited):
             visited.append(current)
 
-            if (problem.isGoalState(current)):
-                return actions
-
-            for n, action, cost in problem.getSuccessors(current):
+            for n, action, stepCost in problem.getSuccessors(current):
                 #print(n, "\t", action, "\t", cost)
                 newAction = actions + [action]
-                queue.update((n, newAction), cost)
-                #print(cost)
+                newCost = stepCost + cost
+                queue.update((n, newAction, newCost), newCost)
 
 
 def nullHeuristic(state, problem=None):
