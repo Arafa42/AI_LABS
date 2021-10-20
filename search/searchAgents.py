@@ -303,7 +303,7 @@ class CornersProblem(search.SearchProblem):
         """
         "*** YOUR CODE HERE ***"
 
-        print("STATATATATATAAREEEE : ", state[1])
+        #print("STATATATATATAAREEEE : ", state[1])
 
         return len(state[1]) == 4
 
