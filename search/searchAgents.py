@@ -295,14 +295,17 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return (self.startingPosition, [])
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        print("STATATATATATAAREEEE : ", state[1])
+
+        return len(state[1]) == 4
 
     def getSuccessors(self, state):
         """
@@ -314,16 +317,27 @@ class CornersProblem(search.SearchProblem):
             state, 'action' is the action required to get there, and 'stepCost'
             is the incremental cost of expanding to that successor
         """
-
+        print(state)
+        currentPosition = state[0]
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
-            #   x,y = currentPosition
-            #   dx, dy = Actions.directionToVector(action)
-            #   nextx, nexty = int(x + dx), int(y + dy)
-            #   hitsWall = self.walls[nextx][nexty]
+            x,y = currentPosition
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            hitsWall = self.walls[nextx][nexty]
 
+            #NEXTX AND NEXTY NOT FOUND AND IF NEXTX AND NEXTY ARE IN CORNERS?
+            #PUSH NEXTX AND NEXTY IN VISITED ARRAY
+            #VISITED ARE IS EQUAL TO ALL CORNERS FOUND UNTIL THIS POINT
+
+            if not hitsWall:
+                if(nextx,nexty) in self.corners and (nextx,nexty) not in state[1]:
+                    visited = state[1] + [(nextx,nexty)]
+                    successors.append((((nextx,nexty),visited),action,1))
+                else:
+                    successors.append((((nextx,nexty),state[1]),action,1))
             "*** YOUR CODE HERE ***"
 
         self._expanded += 1 # DO NOT CHANGE
