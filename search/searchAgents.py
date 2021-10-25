@@ -303,8 +303,8 @@ class CornersProblem(search.SearchProblem):
         """
         "*** YOUR CODE HERE ***"
 
-        #print("STATATATATATAAREEEE : ", state[1])
-
+        #print("STATATATATATAAREEEE : ", state[0])
+        # if lenght of state[1] is 4 because we have 4 corners we need to find
         return len(state[1]) == 4
 
     def getSuccessors(self, state):
@@ -317,7 +317,7 @@ class CornersProblem(search.SearchProblem):
             state, 'action' is the action required to get there, and 'stepCost'
             is the incremental cost of expanding to that successor
         """
-        print(state)
+        #print(state)
         currentPosition = state[0]
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
@@ -330,7 +330,8 @@ class CornersProblem(search.SearchProblem):
 
             #NEXTX AND NEXTY NOT FOUND AND IF NEXTX AND NEXTY ARE IN CORNERS?
             #PUSH NEXTX AND NEXTY IN VISITED ARRAY
-            #VISITED ARE IS EQUAL TO ALL CORNERS FOUND UNTIL THIS POINT
+            #VISITED ARE IS EQUAL TO ALL CORNERS FOUND UNTIL THIS POINT AND SUCCESOR ADDED WITH UPDATED VISITED VAR
+            #ELSE SUCCESOR HAS STILL state[1] WHICH CONSISTS OF CORNERS FOUND UNTIL THIS POINT
 
             if not hitsWall:
                 if(nextx,nexty) in self.corners and (nextx,nexty) not in state[1]:
@@ -338,7 +339,6 @@ class CornersProblem(search.SearchProblem):
                     successors.append((((nextx,nexty),visited),action,1))
                 else:
                     successors.append((((nextx,nexty),state[1]),action,1))
-            "*** YOUR CODE HERE ***"
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
@@ -372,9 +372,38 @@ def cornersHeuristic(state, problem):
     """
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
+    cornerHeur = 0
+    node = state[0]
+    unvisitedCorners = list(set(corners) - set(state[1]))
+    #print("-----------------------------------------------------------")
+    #print("STT : ", set(state[1]))
+    #print("CORNR : ", set(corners))
+    #print("UNVIS : ", unvisitedCorners)
 
-    "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    #While unvisited corners is not empty keep looping
+    # find nearest corner and distance to that corner using manhatten ditance
+
+    while unvisitedCorners:
+        nearestCorner = unvisitedCorners[0]
+        #print("NEAR : ", nearestCorner)
+        nearestCornerDist = util.manhattanDistance(node, nearestCorner)
+
+        # loop through unvisitedcorners starting from second item because first one is claimed by nearestCorner var
+        # check if distance of corners in for loop are closer than distance of nearestCorner if true assign new distance and corner
+        # update heuristic + remove nearestCorner from unvisited + set current node to nearestCorner and return heuristic if while loop breaks
+
+        for c in unvisitedCorners[1:]:
+            dist = util.manhattanDistance(node, c)
+            if dist < nearestCornerDist:
+                nearestCornerDist = dist
+                nearestCorner = c
+
+        cornerHeur += nearestCornerDist
+        unvisitedCorners.remove(nearestCorner)
+        node = nearestCorner
+
+    return cornerHeur
+
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
