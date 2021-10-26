@@ -544,8 +544,10 @@ class ClosestDotSearchAgent(SearchAgent):
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
 
+        # HERE WE CAN BASICALLY SELECT ANY ALGORITHM BFS DFS ASTAR AND RETURN IT
+        return search.aStarSearch(problem)
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -581,7 +583,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return state in self.food.asList()
 
 def mazeDistance(point1, point2, gameState):
     """
