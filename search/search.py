@@ -108,11 +108,12 @@ def depthFirstSearch(problem):
     queue.push((startingPoint, []))
     while(queue):
         current, actions = queue.pop()
+
+        if (problem.isGoalState(current)):
+            return actions
+
         if(current not in visited):
             visited.append(current)
-
-            if(problem.isGoalState(current)):
-                return actions
 
             for n, action, cost in problem.getSuccessors(current):
                     #print(n)
@@ -135,11 +136,12 @@ def breadthFirstSearch(problem):
     queue.push((startingPoint, []))
     while(queue):
         current, actions = queue.pop()
+
+        if (problem.isGoalState(current)):
+            return actions
+
         if(current not in visited):
             visited.append(current)
-
-            if(problem.isGoalState(current)):
-                return actions
 
             for n, action, cost in problem.getSuccessors(current):
                     #print(n)
@@ -193,14 +195,12 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
     while (queue):
         current, actions, prevCost = queue.pop()
-        #print(current)
-        #print(actions)
-        #print(prevCost)
+
+        if (problem.isGoalState(current)):
+            return actions
+
         if (current not in visited):
             visited.append(current)
-
-            if (problem.isGoalState(current)):
-                return actions
 
             for n, action, cost in problem.getSuccessors(current):
                 newAction = actions + [action]
