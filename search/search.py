@@ -89,23 +89,12 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    # util.raiseNotDefined()
-
-    # print("Start:", problem.getStartState())
-    # print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    # print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-
-    from game import Directions
 
     startingPoint = problem.getStartState();
-    #print("STARTINGPOINT : ", startingPoint)
-    #print("CHILDNODES FROM STARTINGPOINT : ", problem.getSuccessors(problem.getStartState()))
-    #print("test : ", problem.getSuccessors((5,4)))
-
-
     visited = []
     queue = util.Stack()
     queue.push((startingPoint, []))
+
     while(queue):
         current, actions = queue.pop()
 
@@ -116,13 +105,10 @@ def depthFirstSearch(problem):
             visited.append(current)
 
             for n, action, cost in problem.getSuccessors(current):
-                    #print(n)
-                    #print(action)
-                    newAction = actions + [action]
-                    queue.push((n, newAction))
+                newAction = actions + [action]
+                queue.push((n, newAction))
 
     print(visited)
-
 
 
 def breadthFirstSearch(problem):
@@ -144,10 +130,8 @@ def breadthFirstSearch(problem):
             visited.append(current)
 
             for n, action, cost in problem.getSuccessors(current):
-                    #print(n)
-                    #print(action)
-                    newAction = actions + [action]
-                    queue.push((n, newAction))
+                newAction = actions + [action]
+                queue.push((n, newAction))
 
     print(visited)
 
@@ -159,7 +143,7 @@ def uniformCostSearch(problem):
     startingPoint = problem.getStartState()
     visited = []
     queue = util.PriorityQueue()
-    queue.update((startingPoint, [], 0), 0) #startingpoint,actions,cost
+    queue.update((startingPoint, [], 0), 0)
 
     while (queue):
         current, actions, cost = queue.pop()
@@ -171,7 +155,6 @@ def uniformCostSearch(problem):
             visited.append(current)
 
             for n, action, stepCost in problem.getSuccessors(current):
-                #print(n, "\t", action, "\t", cost)
                 newAction = actions + [action]
                 newCost = stepCost + cost
                 queue.update((n, newAction, newCost), newCost)
@@ -191,10 +174,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     startingPoint = problem.getStartState()
     visited = []
     queue = util.PriorityQueue()
-    queue.push((startingPoint, [],0), 0) #startingNode,action,cost naar huidige node, prior q
+    queue.push((startingPoint, [], 0), 0) #startingNode,action,cost naar huidige node, prior q
 
     while (queue):
-        current, actions, prevCost = queue.pop()
+        current, actions, cost = queue.pop()
 
         if (problem.isGoalState(current)):
             return actions
@@ -202,11 +185,11 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         if (current not in visited):
             visited.append(current)
 
-            for n, action, cost in problem.getSuccessors(current):
+            for n, action, stepCost in problem.getSuccessors(current):
                 newAction = actions + [action]
-                newCost = prevCost + cost
-                heuristicCost = newCost + heuristic(n,problem)
-                queue.push((n,newAction,newCost),heuristicCost)
+                newCost = cost + stepCost
+                heuristicCost = newCost + heuristic(n, problem)
+                queue.push((n, newAction, newCost), heuristicCost)
 
 # Abbreviations
 bfs = breadthFirstSearch
