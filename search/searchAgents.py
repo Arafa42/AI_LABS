@@ -371,21 +371,15 @@ def cornersHeuristic(state, problem):
     admissible (as well as consistent).
     """
     corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
     cornerHeur = 0
     node = state[0]
     unvisitedCorners = list(set(corners) - set(state[1]))
-    #print("-----------------------------------------------------------")
-    #print("STT : ", set(state[1]))
-    #print("CORNR : ", set(corners))
-    #print("UNVIS : ", unvisitedCorners)
 
     #While unvisited corners is not empty keep looping
-    # find nearest corner and distance to that corner using manhatten ditance
+    #find nearest corner and distance to that corner using manhatten ditance
 
     while unvisitedCorners:
         nearestCorner = unvisitedCorners[0]
-        #print("NEAR : ", nearestCorner)
         nearestCornerDist = util.manhattanDistance(node, nearestCorner)
 
         # loop through unvisitedcorners starting from second item because first one is claimed by nearestCorner var
@@ -495,26 +489,26 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
+
+    "*** YOUR CODE HERE ***"
+
     position, foodGrid = state
     foodCoordinates = foodGrid.asList()
     problem.heuristicInfo['wallCount'] = problem.walls.count()
     dist = []
 
-    #CHECK FOR GOALSTATE
+    # CHECK FOR GOALSTATE
     if problem.isGoalState(state):
         return 0
 
-    #LOOP THROUGH FOOD COORDINATES AND APPEND IT TO THE DISTANCE USING MAZEDISTANCE
-    #ADD CURRENT POS AS POINT 1 AND i FROM THE FOODCOORDINATES AS POINT 2
+    # LOOP THROUGH FOOD COORDINATES AND APPEND IT TO THE DISTANCE USING MAZEDISTANCE
+    # ADD CURRENT POS AS POINT 1 AND i FROM THE FOODCOORDINATES AS POINT 2
     for i in foodCoordinates:
-        dist.append(mazeDistance(position,i,problem.startingGameState))
+        dist.append(mazeDistance(position, i, problem.startingGameState))
 
-    #print(dist)
-    #RETURN MAX DISTANCE
+    # print(dist)
+    # RETURN MAX DISTANCE
     return max(dist)
-
-    "*** YOUR CODE HERE ***"
-
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
